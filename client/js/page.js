@@ -1,0 +1,33 @@
+Router.route('/', function () {
+	this.render('home');
+});
+Router.route('admin',function(){
+	if(Meteor.userId()){
+		this.render('adminIndex');
+	}else{
+		Router.go('login');
+	}
+	
+});
+Router.route('logout',function(){
+	Meteor.logout();
+})
+Router.route('login',function(){
+	if(Meteor.userId()){
+		Router.go('/');
+	}else{
+		this.render();
+	}
+})
+Router.route('add-task',function(){
+	this.render();
+})
+Router.route('add-project',function(){
+	this.render();
+})
+Router.route('add-bugs',function(){
+	this.render();
+});
+Router.route('register',function(){
+	this.render('signupForm');
+})
