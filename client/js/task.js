@@ -7,7 +7,7 @@ Template.addTask.helpers({
 	}
 });
 Template.addTask.events({
-	'click #addTaskSubmit':function (event,template) {
+	'submit #addTask':function (event,template) {
 		event.target.disabled=true;
 		taskname = template.find('#taskname').value;
 		projectname = template.find('#projectname').value;
@@ -19,6 +19,42 @@ Template.addTask.events({
 		prehours = template.find('#prehours').value;
 		hours = template.find('#hours').value;
 		createdUser = Meteor.user().username;
+		if(!taskname){
+			alert('任务名称不能为空');
+			return false;
+		}
+		if(!projectname){
+			alert('项目名称不能为空');
+			return false;
+		}
+		if(!username){
+			alert('制作人不能为空');
+			return false;
+		}
+		if(!prestarttime){
+			alert('预期开始时间不能为空');
+			return false;
+		}
+		if(!preendtime){
+			alert('预期结束时间不能为空');
+			return false;
+		}
+		if(!starttime){
+			alert('实际开始时间不能为空');
+			return false;
+		}
+		if(!endtime){
+			alert('实际开始时间不能为空');
+			return false;
+		}
+		if(!prehours){
+			alert('预期工时不能为空');
+			return false;
+		}
+		if(!hours){
+			alert('实际工时不能为空');
+			return false;
+		}
 		param = {
 			taskname:taskname,
 			projectname:projectname,

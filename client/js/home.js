@@ -26,7 +26,7 @@ Template.loginForm.events({
       template.find("#login-password").value,
       function(error) {
         if (error) {
-          // Display the login error to the user however you want
+          alert('用户名不存在,请先注册');
         }
       }
     );
@@ -34,8 +34,12 @@ Template.loginForm.events({
 });
 Template.projectList.helpers({
 	tasks:function(){
-		username = Meteor.user().username;
-		r =  Task.find({username:username});
+		r = [];
+		if(Meteor.userId()){
+			username = Meteor.user().username;
+			r =  Task.find({username:username});
+		}
+		
 		return r;
 	},
 	email:function(){
@@ -48,9 +52,7 @@ Template.projectList.helpers({
 		
 		console.log(user);
 	},
-	isLoginIn:function(){
-		return isLoginIn();
-	}
+	
 })
 
 Template.loginStatusBar.helpers({
