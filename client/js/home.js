@@ -35,32 +35,62 @@ Template.loginForm.events({
 Template.projectList.helpers({
 	tasks:function(){
 		r = [];
-		if(Meteor.userId()){
-			username = Meteor.user().username;
-			r =  Task.find({username:username});
+		user = Meteor.user();
+		console.log(user);
+		if(user){
+			username = user.username;
+			r =  Task.find({username:username},{transform:function(obj){
+				obj.prehours = parseInt(obj.prehours);
+				obj.hours = parseInt(obj.hours);
+				return obj;
+			}
+			}).fetch();
 		}
-		
 		return r;
 	},
-	email:function(){
-		if(Meteor.userId()){
+	username:function(){
 			user = Meteor.user();
-			return user.emails[0].address;
-		}else{
-			return "暂未登陆";
-		}
+			if(user){
+				return user.username;
+			}
+			return "";
 		
-		console.log(user);
 	},
+	pretotal:function(){
+		pretotal = 0;
+		user = Meteor.user();
+		if(user){
+			username = user.username;
+			task = Task.find({username:username},{pretotal:1}).fetch();
+			_.each(task,function(ele){
+				pretotal += parseInt(ele.prehours);
+			})
+		}
+		return pretotal;
+
+	},
+	total:function(){
+                total = 0;
+                user = Meteor.user();
+                if(user){
+                        username = user.username;
+                        task = Task.find({username:username},{total:1}).fetch();
+                        _.each(task,function(ele){
+                                total += parseInt(ele.hours);
+                        })
+                }
+                return pretotal;
+
+        }
 	
 })
-
 Template.loginStatusBar.helpers({
-	email:function(){
-		if(Meteor.userId()){
-			user = Meteor.user();
-			return user.emails[0].address;
+	username:function(){
+		user = Meteor.user();
+		if(user){
+			return user.username;
 		}
+		return "";
 		
 	},
 	isLoginIn:function(){
