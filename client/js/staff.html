@@ -4,7 +4,6 @@
 
 <body>
   <h1>Welcome to My Staff!</h1>
-
 </body>
 <template name="loginForm">
 	<form id="login-form" class="form-horizontal">
@@ -31,7 +30,6 @@
 
     <label for="username">username</label>
     <input type="text" id="username" name="username" placeholder="Username" />
-
     <button type="submit">Sign Up</button>
   </form>
 </template>
@@ -59,16 +57,16 @@
 <template name="addTask">
 	<form name="addTask" id="addTask" class="form-horizontal">
 	<div class="form-group">
-	    <label for="inputEmail3" class="col-sm-2 control-label">任务名称</label>
+	    <label for="inputEmail3" class="col-sm-2 control-label">任务名称<em>*</em></label>
 	    <div class="col-sm-10">
-	      <input type="text" class="form-control" id="taskname" placeholder="请输入任务名称">
+	      <input type="text" class="form-control" id="taskname" placeholder="请输入任务名称" required>
 	    </div>
 	 </div>
 	 <div class="form-group">
-	    <label for="projectname" class="col-sm-2 control-label">项目</label>
+	    <label for="projectname" class="col-sm-2 control-label">项目<em>*</em></label>
 	    <div class="col-sm-10">
-		    <select class="form-control" id="projectname" name="projectname">
-		    <option value=“”>请选择项目</option>
+		    <select class="form-control" id="projectname" name="projectname" required>
+		    <option value="">请选择项目</option>
 			  {{#each projectList}}
 			<option value="{{projectname}}">{{projectname}}</option>
 			{{/each}}
@@ -76,10 +74,10 @@
 	    </div>
 	 </div>
 	 <div class="form-group">
-	    <label for="username" class="col-sm-2 control-label">制作人</label>
+	    <label for="username" class="col-sm-2 control-label">制作人<em>*</em></label>
 	    <div class="col-sm-10">
-		    <select class="form-control" id="username" name="username">
-		    <option value=“”>请选择制作人</option>
+		    <select class="form-control" id="username" name="username" required>
+		    <option value="">请选择制作人</option>
 			  {{#each userList}}
 			<option value="{{username}}">{{username}}</option>
 			{{/each}}
@@ -87,15 +85,15 @@
 	    </div>
 	 </div>
 	 <div class="form-group">
-	    <label for="prestarttime" class="col-sm-2 control-label">预期开始时间</label>
+	    <label for="prestarttime" class="col-sm-2 control-label">预期开始时间<em>*</em></label>
 	    <div class="col-sm-10">
-	      <input type="text" name="prestarttime" id="prestarttime" readonly placeholder="点击选择日期">
+	      <input type="text" name="prestarttime" id="prestarttime"  placeholder="点击选择日期" required>
 	    </div>
 	 </div>
 	 <div class="form-group">
-	    <label for="preendtime" class="col-sm-2 control-label">预期结束时间</label>
+	    <label for="preendtime" class="col-sm-2 control-label">预期结束时间<em>*</em></label>
 	    <div class="col-sm-10">
-	      <input type="text" name="preendtime" id="preendtime" readonly placeholder="点击选择日期">
+	      <input type="text" name="preendtime" id="preendtime"  placeholder="点击选择日期" required>
 	    </div>
 	 </div>
 	 <div class="form-group">
@@ -111,15 +109,15 @@
 	    </div>
 	 </div>
 	 <div class="form-group">
-	    <label for="prehours" class="col-sm-2 control-label">预期工时</label>
+	    <label for="prehours" class="col-sm-2 control-label">预期工时<em>*</em></label>
 	    <div class="col-sm-10">
-	      <input type="text" name="prehours" id="prehours">
+	      <input type="text" name="prehours" id="prehours" required placeholder="请填写预期工时">
 	    </div>
 	 </div>
 	 <div class="form-group">
 	    <label for="hours" class="col-sm-2 control-label">实际工时</label>
 	    <div class="col-sm-10">
-	      <input type="text" name="hours" id="hours">
+	      <input type="text" name="hours" id="hours" placeholder="请填写实际工时">
 	    </div>
 	 </div>
 	  <div class="form-group">
@@ -129,26 +127,17 @@
   </div>
 	</form>
 </template>
-<template name="login">
-  {{>loginButtons}}
-</template>
+
 <template name="loginStatusBar">
-	{{#if currentUser}}
-	<div>欢迎您:{{email}}|<a href="javascript:void(0)" id="logout">登出</a></div>
-	{{else}}
-	{{>loginForm}}
-	{{/if}}
+	<div>欢迎您:{{username}}|<a href="javascript:void(0)" id="logout">登出</a></div>
 </template>
 <template name="home">
- 
   {{>loginStatusBar}}
   {{>projectList}}
  
 </template>
 <template name="projectList">
-	{{#if isLoginIn}}
- 	<h2>My Home Page({{email}})</h2>
- 	{{#if tasks}}
+ 	<h2>My Home Page({{username}})</h2>
 	 <table class="table table-striped table-responsive table-bordered">
  	<thead>
   	<tr>
@@ -163,22 +152,25 @@
   		<th>bugs num</th>
   	</tr>
   	</thead>
+	<tbody>
   	{{#each tasks}}
-  	<tbody>
-  	<tr>
-  		<td>{{projectname}}</td>
-  		<td>{{taskname}}</td>
-  		<td>{{prestarttime}}</td>
-  		<td>{{preendtime}}</td>
-  		<td>{{starttime}}</td>
-  		<td>{{endtime}}</td>
-  		<td>{{prehours}}</td>
-  		<td>{{hours}}</td>
-  		<td>{{bugs}}</td>
-  	</tr>
-  	</tbody>
-  	{{/each}}
-  </table>
-  {{/if}}
-  {{/if}}
+		{{> project}}
+	{{/each}}
+	<tr><td>预期总时间</td><td align="right" colspan="8">{{pretotal}}</td></tr>
+	<tr><td>实际总时间</td><td align="right" colspan="8">{{total}}</td></tr>
+	</tbody>
+	</table>
+</template>
+<template name="project">
+        <tr>
+                <td>{{projectname}}</td>
+                <td>{{taskname}}</td>
+                <td>{{prestarttime}}</td>
+                <td>{{preendtime}}</td>
+                <td>{{starttime}}</td>
+                <td>{{endtime}}</td>
+                <td>{{prehours}}</td>
+                <td>{{hours}}</td>
+                <td>{{bugs}}</td>
+        </tr>
 </template>

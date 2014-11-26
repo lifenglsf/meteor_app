@@ -1,12 +1,17 @@
+Router.onBeforeAction(function() {
+console.log(Meteor.userId()); 
+ if (!Meteor.userId()) {
+    this.render('login');
+  }else{
+    this.next();		
+  }
+});
 Router.route('/', function () {
+	console.log("enter");
 	this.render('home');
 });
 Router.route('admin',function(){
-	if(Meteor.userId()){
 		this.render('adminIndex');
-	}else{
-		Router.go('login');
-	}
 	
 });
 Router.route('logout',function(){

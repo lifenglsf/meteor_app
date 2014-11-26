@@ -26,7 +26,7 @@ Template.loginForm.events({
       template.find("#login-password").value,
       function(error) {
         if (error) {
-          // Display the login error to the user however you want
+          alert('用户名不存在,请先注册');
         }
       }
     );
@@ -34,31 +34,63 @@ Template.loginForm.events({
 });
 Template.projectList.helpers({
 	tasks:function(){
-		username = Meteor.user().username;
-		r =  Task.find({username:username});
+		r = [];
+		user = Meteor.user();
+		console.log(user);
+		if(user){
+			username = user.username;
+			r =  Task.find({username:username},{transform:function(obj){
+				obj.prehours = parseInt(obj.prehours);
+				obj.hours = parseInt(obj.hours);
+				return obj;
+			}
+			}).fetch();
+		}
 		return r;
 	},
-	email:function(){
-		if(Meteor.userId()){
+	username:function(){
 			user = Meteor.user();
-			return user.emails[0].address;
-		}else{
-			return "暂未登陆";
-		}
+			if(user){
+				return user.username;
+			}
+			return "";
 		
-		console.log(user);
 	},
-	isLoginIn:function(){
-		return isLoginIn();
-	}
-})
-
-Template.loginStatusBar.helpers({
-	email:function(){
-		if(Meteor.userId()){
-			user = Meteor.user();
-			return user.emails[0].address;
+	pretotal:function(){
+		pretotal = 0;
+		user = Meteor.user();
+		if(user){
+			username = user.username;
+			task = Task.find({username:username},{pretotal:1}).fetch();
+			_.each(task,function(ele){
+				pretotal += parseInt(ele.prehours);
+			})
 		}
+		return pretotal;
+
+	},
+	total:function(){
+                total = 0;
+                user = Meteor.user();
+                if(user){
+                        username = user.username;
+                        task = Task.find({username:username},{total:1}).fetch();
+                        _.each(task,function(ele){
+                                total += parseInt(ele.hours);
+                        })
+                }
+                return pretotal;
+
+        }
+	
+})
+Template.loginStatusBar.helpers({
+	username:function(){
+		user = Meteor.user();
+		if(user){
+			return user.username;
+		}
+		return "";
 		
 	},
 	isLoginIn:function(){
