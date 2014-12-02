@@ -1,7 +1,11 @@
 Router.onBeforeAction(function() {
-console.log(Meteor.userId()); 
  if (!Meteor.userId()) {
-    this.render('login');
+    routename = Router.current().route.getName();
+	if(routename == 'register'){
+		this.render('signupForm');
+		return;
+	}
+	this.render('loginForm');
   }else{
     this.next();		
   }

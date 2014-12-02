@@ -19,6 +19,11 @@ Template.addTask.events({
 		prehours = template.find('#prehours').value;
 		hours = template.find('#hours').value;
 		createdUser = Meteor.user().username;
+		task = Task.findOne({taskname:taskname});
+		if(task){
+			alert(taskname+"任务已经存在，请更换任务名称");
+			return false;
+		}
 		if(!taskname){
 			alert('任务名称不能为空');
 			return false;
