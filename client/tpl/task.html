@@ -1,0 +1,73 @@
+<template name="addTask">
+	<form name="addTask" id="addTask" class="form-horizontal">
+	<div class="form-group">
+	    <label for="inputEmail3" class="col-sm-2 control-label">任务名称<em>*</em></label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" id="taskname" placeholder="请输入任务名称" required>
+	    </div>
+	 </div>
+	 <div class="form-group">
+	    <label for="projectname" class="col-sm-2 control-label">项目<em>*</em></label>
+	    <div class="col-sm-10">
+		    <select class="form-control" id="projectname" name="projectname" required>
+		    <option value="">请选择项目</option>
+			  {{#each projectList}}
+			<option value="{{projectname}}">{{projectname}}</option>
+			{{/each}}
+			</select>
+	    </div>
+	 </div>
+	 <div class="form-group">
+	    <label for="username" class="col-sm-2 control-label">制作人<em>*</em></label>
+	    <div class="col-sm-10">
+		    <select class="form-control" id="username" name="username" required>
+		    <option value="">请选择制作人</option>
+			  {{#each userList}}
+			<option value="{{username}}">{{username}}</option>
+			{{/each}}
+			</select>
+	    </div>
+	 </div>
+	 <div class="form-group">
+	    <label for="prestarttime" class="col-sm-2 control-label">预期开始时间<em>*</em></label>
+	    <div class="col-sm-10">
+	      <input type="text" name="prestarttime" id="prestarttime"  placeholder="点击选择日期" required>
+	    </div>
+	 </div>
+	 <div class="form-group">
+	    <label for="preendtime" class="col-sm-2 control-label">预期结束时间<em>*</em></label>
+	    <div class="col-sm-10">
+	      <input type="text" name="preendtime" id="preendtime"  placeholder="点击选择日期" required>
+	    </div>
+	 </div>
+	 <div class="form-group">
+	    <label for="starttime" class="col-sm-2 control-label">实际开始时间</label>
+	    <div class="col-sm-10">
+	      <input type="text" name="starttime" id="starttime" placeholder="点击选择日期">
+	    </div>
+	 </div>
+	 <div class="form-group">
+	    <label for="endtime" class="col-sm-2 control-label">实际结束时间</label>
+	    <div class="col-sm-10">
+	      <input type="text" name="endtime" id="endtime" placeholder="点击选择日期">
+	    </div>
+	 </div>
+	 <div class="form-group">
+	    <label for="prehours" class="col-sm-2 control-label">预期工时<em>*</em></label>
+	    <div class="col-sm-10">
+	      <input type="text" name="prehours" id="prehours" required placeholder="请填写预期工时">
+	    </div>
+	 </div>
+	 <div class="form-group">
+	    <label for="hours" class="col-sm-2 control-label">实际工时</label>
+	    <div class="col-sm-10">
+	      <input type="text" name="hours" id="hours" placeholder="请填写实际工时">
+	    </div>
+	 </div>
+	  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary" id="addTaskSubmit">添加任务</button>
+    </div>
+  </div>
+	</form>
+</template>
