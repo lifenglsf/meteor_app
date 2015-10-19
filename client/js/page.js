@@ -29,14 +29,123 @@ Router.route('login',function(){
 	}
 })
 Router.route('add-task',function(){
-	this.render();
+	console.log(Meteor.user())
+
+	userId = Meteor.userId();
+	if(!userId){
+		Router.go('login');
+	}
+	user = Meteor.user();
+	role = user['role'];
+	module = "task";
+	action = "add";
+	actionlist = role[module];
+	if(_.indexOf(actionlist,action)==-1){
+		this.render('noperm');
+	}else{
+		this.render();
+	}
+	
 })
 Router.route('add-project',function(){
-	this.render();
+	user = Meteor.user();
+	role = user['role'];
+	module = "project";
+	action = "add";
+	actionlist = role[module];
+	if(_.indexOf(actionlist,action)==-1){
+		this.render('noperm');
+	}else{
+		this.render();
+	}
 })
 Router.route('add-bugs',function(){
-	this.render();
+	user = Meteor.user();
+	role = user['role'];
+	module = "bug";
+	action = "add";
+	actionlist = role[module];
+	if(_.indexOf(actionlist,action)==-1){
+		this.render('noperm');
+	}else{
+		this.render();
+	}
 });
 Router.route('register',function(){
 	this.render('signupForm');
+})
+Router.route('addModule',function(){
+	//this.render();
+	user = Meteor.user();
+	role = user['role'];
+	module = "module";
+	action = "add";
+	actionlist = role[module];
+	if(_.indexOf(actionlist,action)==-1){
+		this.render('noperm');
+	}else{
+		this.render();
+	}
+})
+Router.route('listModule',function(){
+	user = Meteor.user();
+	role = user['role'];
+	module = "module";
+	action = "list";
+	actionlist = role[module];
+	if(_.indexOf(actionlist,action)==-1){
+		this.render('noperm');
+	}else{
+		this.render();
+	}
+})
+Router.route('editModule/:_id',function(){
+	
+	user = Meteor.user();
+	role = user['role'];
+	module = "module";
+	action = "list";
+	actionlist = role[module];
+	if(_.indexOf(actionlist,action)==-1){
+		this.render('noperm');
+	}else{
+		var item = Module.findOne({_id: this.params._id});
+  		this.render('editModule', {data: item});
+	}
+})
+Router.route('delModule/:_id',function(){
+	
+  	
+	user = Meteor.user();
+	role = user['role'];
+	module = "module";
+	action = "list";
+	actionlist = role[module];
+	if(_.indexOf(actionlist,action)==-1){
+		this.render('noperm');
+	}else{
+		var item = Module.findOne({_id: this.params._id});
+		if(item){
+			Module.remove({_id:this.params._id});
+			Router.go('listModule');
+		}else{
+			this.render('recordnoexists');
+		}
+	}
+})
+Router.route('/user/addRole',function(){
+	//this.render('addRole');
+	user = Meteor.user();
+	role = user['role'];
+	module = "user";
+	action = "addrole";
+	actionlist = role[module];
+	if(_.indexOf(actionlist,action)==-1){
+		this.render('noperm');
+	}else{
+		this.render('addRole');
+	}
+})
+Router.route('noperm',function(){
+	this.render();
 })

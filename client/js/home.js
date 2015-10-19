@@ -32,58 +32,7 @@ Template.loginForm.events({
     );
   }
 });
-Template.projectList.helpers({
-	tasks:function(){
-		r = [];
-		user = Meteor.user();
-		console.log(user);
-		if(user){
-			username = user.username;
-			r =  Task.find({username:username},{transform:function(obj){
-				obj.prehours = parseInt(obj.prehours);
-				obj.hours = parseInt(obj.hours);
-				return obj;
-			}
-			}).fetch();
-		}
-		return r;
-	},
-	username:function(){
-			user = Meteor.user();
-			if(user){
-				return user.username;
-			}
-			return "";
-		
-	},
-	pretotal:function(){
-		pretotal = 0;
-		user = Meteor.user();
-		if(user){
-			username = user.username;
-			task = Task.find({username:username},{pretotal:1}).fetch();
-			_.each(task,function(ele){
-				pretotal += parseInt(ele.prehours);
-			})
-		}
-		return pretotal;
 
-	},
-	total:function(){
-                total = 0;
-                user = Meteor.user();
-                if(user){
-                        username = user.username;
-                        task = Task.find({username:username},{total:1}).fetch();
-                        _.each(task,function(ele){
-                                total += parseInt(ele.hours);
-                        })
-                }
-                return pretotal;
-
-        }
-	
-})
 Template.loginStatusBar.helpers({
 	username:function(){
 		user = Meteor.user();
