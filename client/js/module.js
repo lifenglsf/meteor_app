@@ -34,6 +34,12 @@ Template.addModule.events({
 			obj = $(ele).find('input');
 			opertations.push(obj.val())
 		});
+		role[moduleenname] = opertations;
+		superuser = Meteor.users.find({issuper:1}).fetch();
+		
+		/*role = superuser['role'];
+		role[moduleenname] = operations;*/
+		//Meteor.users.update({_id:Meteor.userId()},{'$set':{role:role}});
 		param = {
 			modulename:modulename,
 			operationlist:opertations,
@@ -45,8 +51,16 @@ Template.addModule.events({
 			alert(modulename+'模块已存在');
 			return false;
 		}
+
 		res = Module.insert(param);
 		if(res){
+			$.each(superuser,function(i,v){
+			id = v._id;
+			newrole = v.role;
+			newrole[moduleenname] = opertations;
+			console.log(newrole);
+			Meteor.users.update({_id:v._id},{'$set':{role:newrole}})
+		})
 			alert('添加成功');
 			template.find('#addModule').reset();
 			event.target.disabled=false;
@@ -93,6 +107,8 @@ Template.editModule.events({
 			alert(modulename+'模块已存在');
 			return false;
 		}
+		role[moduleenname] = operations;
+		Meteor.users.update({issuper:1},{'$push':{role:role}})
 		param = {
 			'$set':{
 				modulename:modulename,

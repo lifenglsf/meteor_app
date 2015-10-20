@@ -5,6 +5,10 @@ Router.onBeforeAction(function() {
 		this.render('signupForm');
 		return;
 	}
+	if(routename == 'createSuperUser'){
+		this.render('createSuperUser');
+		return;
+	}
 	this.render('loginForm');
   }else{
     this.next();		
@@ -81,14 +85,17 @@ Router.route('addModule',function(){
 	module = "module";
 	action = "add";
 	actionlist = role[module];
+	/*this.render();
 	if(_.indexOf(actionlist,action)==-1){
 		this.render('noperm');
 	}else{
 		this.render();
-	}
+	}*/
+	this.render();
 })
 Router.route('listModule',function(){
-	user = Meteor.user();
+	this.render();
+	/*user = Meteor.user();
 	role = user['role'];
 	module = "module";
 	action = "list";
@@ -97,7 +104,7 @@ Router.route('listModule',function(){
 		this.render('noperm');
 	}else{
 		this.render();
-	}
+	}*/
 })
 Router.route('editModule/:_id',function(){
 	
@@ -138,7 +145,7 @@ Router.route('/user/addRole',function(){
 	user = Meteor.user();
 	role = user['role'];
 	module = "user";
-	action = "addrole";
+	action = "add";
 	actionlist = role[module];
 	if(_.indexOf(actionlist,action)==-1){
 		this.render('noperm');
@@ -148,4 +155,10 @@ Router.route('/user/addRole',function(){
 })
 Router.route('noperm',function(){
 	this.render();
+})
+Router.route('createSuperUser',function(){
+	if(Meteor.userId()){
+		Router.go('/');
+	}
+	this.render('createSuperUser');
 })

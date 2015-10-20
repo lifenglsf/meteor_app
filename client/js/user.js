@@ -45,6 +45,39 @@ Template.addRole.helpers({
     }
 })
 
+Template.createSuperUser.events({
+    'click button':function(event,template){
+        event.preventDefault();
+        event.target.disabled=true;
+        module = Module.find({}).fetch();
+        role = {};
+        $.each(module,function(i,v){
+            role[v.moduleenname] =v.operationlist; 
+        })
+        Accounts.createUser({
+          email:template.find("#email").value,
+          username: template.find("#username").value,
+          password: template.find("#password").value,
+          
+        }, function(error) {
+          if (error) {
+            alert(error);
+            // Display the user creation error to the user however you want
+          }else{
+             r = Meteor.users.update({
+                _id: Meteor.userId()
+            }, {
+                '$set': {
+                    'role': role,
+                    'issuper' :1
+                }
+            });
+            alert('注册成功');
+            Router.go('/');
+          }
+        });
+    }
+})
 Template.addRole.events({
     'click td input': function(event, template) {
         targetobj = $(event.target);
