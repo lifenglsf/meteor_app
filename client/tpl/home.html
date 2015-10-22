@@ -1,0 +1,20 @@
+
+<template name="adminIndex">
+	{{>loginStatusBar}}
+	<div>
+		<span id="addProject">添加项目</span>
+		<span id="addBug">添加bug</span>
+		<span id="addTask">任务列表</span>
+		<span id="taskList">任务列表</span>
+	</div>
+</template>
+
+
+<template name="loginStatusBar">
+	<div><span>欢迎您:{{username}}|<a href="javascript:void(0)" id="logout">登出</a></span></div>
+</template>
+<template name="home">
+  {{>loginStatusBar}}
+  {{>projectList}}
+ 
+</template>
