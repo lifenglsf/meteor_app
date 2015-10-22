@@ -1,0 +1,74 @@
+<head>
+  <title>Space</title>
+</head>
+
+<body>
+
+</body>
+	<template name="common">
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active"><a href="/">Home</a></li>
+		  	<li role="presentation" class="dropdown">
+			    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+			      项目管理 <span class="caret"></span>
+			    </a>
+			    <ul class="dropdown-menu">
+			    	<li>
+			    		<a href="/project/add">新增项目</a>
+			    		<a href="/project/list">项目列表</a>
+			    	</li>
+			    </ul>
+	  		</li>
+	  		<li role="presentation" class="dropdown">
+			    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+			      模块管理 <span class="caret"></span>
+			    </a>
+			    <ul class="dropdown-menu">
+			    	<li>
+			    		<a href="/module/add">新增模块</a>
+			    		<a href="/module/list">模块列表</a>
+			    	</li>
+			    </ul>
+	  		</li>
+	  		<li role="presentation" class="dropdown">
+			    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+			      bug管理 <span class="caret"></span>
+			    </a>
+			    <ul class="dropdown-menu">
+			    	<li>
+			    		<a href="/bug/add">新增bug</a>
+			    		<a href="/bug/list">bug列表</a>
+			    	</li>
+			    </ul>
+	  		</li>
+	  		<li role="presentation" class="dropdown">
+			    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+			      任务管理 <span class="caret"></span>
+			    </a>
+			    <ul class="dropdown-menu">
+			    	<li>
+			    		<a href="/task/add">新增任务</a>
+			    		<a href="/task/list">任务列表</a>
+			    	</li>
+			    </ul>
+	  		</li>
+	  		<li role="presentation" class="dropdown">
+			    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+			      用户管理 <span class="caret"></span>
+			    </a>
+			    <ul class="dropdown-menu">
+			    	<li>
+			    		<a href="/user/add">新增用户</a>
+			    		<a href="/user/list">用户列表</a>
+			    	</li>
+			    </ul>
+	  		</li>
+	  	</ul>
+	  	{{> yield}}
+	  	<footer>
+	  		<span>Authored TomLi</span>
+	    </footer>
+	</template>
+	<template name="sign">
+		{{>yield}}
+	</template>

@@ -2,7 +2,6 @@ Template.projectList.helpers({
 	tasks:function(){
 		r = [];
 		user = Meteor.user();
-		console.log(user);
 		if(user){
 			username = user.username;
 			r =  Task.find({username:username},{transform:function(obj){
@@ -73,7 +72,6 @@ Template.addProject.events({
 			alert('添加失败');
 			event.target.disabled=false;
 		}
-		
 		
 	}
 })
