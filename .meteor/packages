@@ -8,7 +8,6 @@ accounts-ui
 accounts-password
 iron:router
 jquery
-mizzao:bootstrap-3
 rajit:bootstrap3-datepicker
 aldeed:autoform
 
@@ -25,3 +24,4 @@ random
 ejson
 spacebars
 check
+mizzao:bootstrap-3
