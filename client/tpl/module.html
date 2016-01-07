@@ -1,91 +1,118 @@
-
 <template name="editModule">
-	<div class="form-group">
-			<label for="moduleName" class="control-label col-sm-2">模块名称</label>
-			<div class="col-sm-10">
-				<input type="text" name="modulename" id="modulename" value="{{modulename}}" placeholder="请输入模块名称" required class="form-control">
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="moduleenname" class="control-label col-sm-2">模块英文名称</label>
-			<div class="col-sm-10" style="padding-top: 5px;">
-				<input type="text" name="moduleenname" id="moduleenname" value="{{moduleenname}}" placeholder="请输入模块英文名称" required class="form-control">
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="moduleenname" class="control-label col-sm-2">操作列表</label>
-			{{#each operationlist}}
-			<div class="col-sm-10 col-sm-offset-2 olist">
-				<div class="col-sm-10" style="padding:0 5px 5px 0;">
-					<input type="text" name="opname[]" id="opname{{@index}}" value="{{this}}" placeholder="请输入操作名称" required class="form-control" style="padding-bottom: 0;">
-				
-				</div>
-			<button class="btn btn-default del-op col-sm-2">删除</button>			</div>
-		
-			{{/each}}
-			<div class="col-sm-10 col-sm-offset-2" id="addBtnDiv">
-				<input type="button" name="add" id="add" value="新增操作列表">
+<form name="editModule" id="editModule" class="form-horizontal">
+    <div class="form-group">
+        <label for="moduleName" class="control-label col-sm-2">模块名称</label>
+        <div class="col-sm-10">
+            <select name="project" id="proejct" class="form-control">
+                <option value="">请选择项目</option>
+                {{#each projectlist}} {{#if isselect}}
+                <option value="{{projectname}}" selected>{{projectname}}</option>
+                {{else}}
+                <option value="{{projectname}}">{{projectname}}</option>
+                {{/if}} {{/each}}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="moduleName" class="control-label col-sm-2">模块名称</label>
+        <div class="col-sm-10">
+            <input type="text" name="modulename" id="modulename" value="{{modulename}}" placeholder="请输入模块名称" required class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="moduleenname" class="control-label col-sm-2">模块英文名称</label>
+        <div class="col-sm-10" style="padding-top: 5px;">
+            <input type="text" name="moduleenname" id="moduleenname" value="{{moduleenname}}" placeholder="请输入模块英文名称" required class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="moduleenname" class="control-label col-sm-2">操作列表</label>
+        {{#each operationlist}}
+        <div class="col-sm-10 {{#if @index}}col-sm-offset-2{{/if}} olist">
+            <div class="col-sm-10" style="padding:0 5px 5px 0;">
+                <input type="text" name="opname[]" id="opname{{@index}}" value="{{this}}" placeholder="请输入操作名称" required class="form-control" style="padding-bottom: 0;">
 
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-sm-10 col-sm-offset-2" id="addBtnDiv">
-				<input type="button"  value="编辑模块" id="addModuleBtn" data-id="{{_id}}" >
+            </div>
+            <button class="btn btn-default del-op col-sm-2">删除</button>
+        </div>
 
-			</div>
-		</div>
+        {{/each}}
+        <div class="col-sm-10 col-sm-offset-2" id="addBtnDiv">
+            <input type="button" name="add" id="add" value="新增操作列表">
+
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2" id="addBtnDiv">
+            <input type="button" value="编辑模块" id="addModuleBtn" data-id="{{_id}}">
+
+        </div>
+    </div>
+    </form>
 </template>
 
 <template name="listModule">
-	<table class="table table-striped table-responsive table-bordered">
-		<thead>
-			<tr>
-		  		<th>模块名称</th>
-		  		<th>可执行操作</th>
-		  		<th>操作</th>
-		  	</tr>
-		</thead>
-		<tbody>
-			{{#each modulelist}}
-				<tr>
-					<td>{{modulename}}</td>
-					<td>{{operationlist}}</td>
-					<td><a href="/module/edit/{{_id}}">编辑</a>|<a href="/module/del/{{_id}}">删除</a></td>
-				</tr>
-			{{/each}}
-		</tbody>
-	</table>
+    <table class="table table-striped table-responsive table-bordered">
+        <thead>
+            <tr>
+                <th>模块名称</th>
+                <th>可执行操作</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each modulelist}}
+            <tr>
+                <td>{{modulename}}</td>
+                <td>{{operationlist}}</td>
+                <td><a href="/module/edit/{{_id}}">编辑</a>|<a href="/module/del/{{_id}}">删除</a></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </template>
 <template name="addModule">
-	<form name="addModule" id="addModule" class="form-horizontal">
-		<div class="form-group">
-			<label for="moduleName" class="control-label col-sm-2">模块名称</label>
-			<div class="col-sm-10">
-				<input type="text" name="modulename" id="modulename" value="{{modulename}}" placeholder="请输入模块名称" required class="form-control">
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="moduleenname" class="control-label col-sm-2">模块英文名称</label>
-			<div class="col-sm-10">
-				<input type="text" name="moduleenname" id="moduleenname" value="{{moduleenname}}" placeholder="请输入模块英文名称" required class="form-control">
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="control-label col-sm-2">操作列表</label>
-			<div class="col-sm-10 olist">
-				<input type="text" name="opname[]" id="opname1" value="" placeholder="请输入操作名称" required class="form-control">
-			</div>
-			<div class="col-sm-10 col-sm-offset-2" id="addBtnDiv">
-				<input type="button" name="add" id="add" value="新增操作列表">
+    <form name="addModule" id="addModule" class="form-horizontal">
+        <div class="form-group">
+            <label for="moduleName" class="control-label col-sm-2">模块名称</label>
+            <div class="col-sm-10">
+            <select name="project" id="proejct" class="col-sm-10 form-control">
+                <option value="">请选择项目</option>
+                {{#each projectlist}}
+                <option value="{{projectname}}">{{projectname}}</option>
 
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-sm-10 col-sm-offset-2" id="addBtnDiv">
-				<input type="button"  value="新增模块" id="addModuleBtn" >
+                {{/each}}
+            </select>
+        </div>
+        </div>
+        <div class="form-group">
+            <label for="moduleName" class="control-label col-sm-2">模块名称</label>
+            <div class="col-sm-10">
+                <input type="text" name="modulename" id="modulename" value="{{modulename}}" placeholder="请输入模块名称" required class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="moduleenname" class="control-label col-sm-2">模块英文名称</label>
+            <div class="col-sm-10">
+                <input type="text" name="moduleenname" id="moduleenname" value="{{moduleenname}}" placeholder="请输入模块英文名称" required class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">操作列表</label>
+            <div class="col-sm-10 olist">
+                <input type="text" name="opname[]" id="opname1" value="" placeholder="请输入操作名称" required class="form-control">
+            </div>
+            <div class="col-sm-10 col-sm-offset-2" id="addBtnDiv">
+                <input type="button" name="add" id="add" value="新增操作列表">
 
-			</div>
-		</div>
-	</form>
-	
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2" id="addBtnDiv">
+                <input type="button" value="新增模块" id="addModuleBtn">
+
+            </div>
+        </div>
+    </form>
+
 </template>

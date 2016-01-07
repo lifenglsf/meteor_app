@@ -1,43 +1,53 @@
 Router.configure({
-    notFoundTemplate: '404',
-    layoutTemplate: 'common'
+    //notFoundTemplate: '404',
+    layoutTemplate: 'common',
 });
-Router.onBeforeAction(function() {
-    if (!Meteor.userId()) {
-        routename = Router.current().route.getName();
-        if (routename == 'register') {
-            this.render('signupForm');
-            return;
+
+Router.onBeforeAction(function () {
+    var route = Router.current().route;
+    if (route) {
+        routename = route.getName();
+        if (!Meteor.userId()) {
+
+            if (routename == 'register') {
+                this.layout('sign')
+                this.render('signupForm');;
+                return;
+            }
+            if (routename == 'createSuperUser') {
+                this.layout('sign');
+                this.render('createSuperUser');
+                return;
+            }
+            this.layout('sign');
+            this.render('loginForm');
+        } else {
+            this.next();
         }
-        if (routename == 'createSuperUser') {
-            this.render('createSuperUser');
-            return;
-        }
+    }else{
         this.layout('sign');
-        this.render('loginForm');
-    } else {
-        this.next();
     }
+
 });
-Router.route('/', function() {
+Router.route('/', function () {
     this.render('home');
 });
-Router.route('admin', function() {
+Router.route('admin', function () {
     this.render('adminIndex');
 
 });
-Router.route('logout', function() {
+Router.route('logout', function () {
     Meteor.logout();
 });
-Router.route('login', function() {
+Router.route('login', function () {
     if (Meteor.userId()) {
         Router.go('/');
     } else {
         this.layout('sign');
-        this.render();
+        this.render('login');
     }
 });
-Router.route('task/add', function() {
+Router.route('task/add', function () {
 
     userId = Meteor.userId();
     if (!userId) {
@@ -55,11 +65,61 @@ Router.route('task/add', function() {
     }
 
 });
-Router.route('project/add', function() {
+Router.route('task/list',function(){
+    /* user = Meteor.user();
+     var role ={};
+     if(user && user['role']){
+        role = user['role'];
+     }
+     module = "task";
+     action = "list";
+     actionlist = role[module];
+     if (_.indexOf(actionlist, action) == -1) {
+         this.render('noperm');
+     } else {
+         this.render('addBug');
+     }*/
+    this.render('listTask');
+});
+Router.route('task/edit/:_id', function () {
+    Session.set('taskid', this.params._id);
+     /* user = Meteor.user();
+     var role ={};
+     if(user && user['role']){
+        role = user['role'];
+     }
+     module = "task";
+     action = "edit";
+     actionlist = role[module];
+     if (_.indexOf(actionlist, action) == -1) {
+         this.render('noperm');
+     } else {
+         this.render('addBug');
+     }*/
+    
+        this.render('editTask');
+    
+
+    //}
+});
+Router.route('task/del/:_id', function () {
+     var item = Task.findOne({
+        _id: this.params._id
+    });
+    if (item) {
+        Task.remove({
+            _id: this.params._id
+        });
+        Router.go('listTask');
+    } else {
+        this.render('recordnoexists');
+    }
+});
+Router.route('project/add', function () {
     var user = Meteor.user();
-    var role ={};
-    if(user && user['role']){
-    	role = user['role'];
+    var role = {};
+    if (user && user['role']) {
+        role = user['role'];
     }
     var module = "project";
     var action = "add";
@@ -70,31 +130,141 @@ Router.route('project/add', function() {
         this.render('addProject');
     }
 });
-Router.route('bugs/add', function() {
-    user = Meteor.user();
-    var role ={};
-    if(user && user['role']){
-    	role = user['role'];
-    }
-    module = "bug";
-    action = "add";
-    actionlist = role[module];
-    if (_.indexOf(actionlist, action) == -1) {
-        this.render('noperm');
+
+Router.route('project/list',function(){
+    /* user = Meteor.user();
+     var role ={};
+     if(user && user['role']){
+        role = user['role'];
+     }
+     module = "project";
+     action = "list";
+     actionlist = role[module];
+     if (_.indexOf(actionlist, action) == -1) {
+         this.render('noperm');
+     } else {
+         this.render('addBug');
+     }*/
+    this.render('listProject');
+});
+Router.route('bugs/add', function () {
+    /* user = Meteor.user();
+     var role ={};
+     if(user && user['role']){
+     	role = user['role'];
+     }
+     module = "bug";
+     action = "add";
+     actionlist = role[module];
+     if (_.indexOf(actionlist, action) == -1) {
+         this.render('noperm');
+     } else {
+         this.render('addBug');
+     }*/
+    this.render('addBug');
+});
+Router.route('bugs/list', function () {
+    /* user = Meteor.user();
+     var role ={};
+     if(user && user['role']){
+     	role = user['role'];
+     }
+     module = "bug";
+     action = "list";
+     actionlist = role[module];
+     if (_.indexOf(actionlist, action) == -1) {
+         this.render('noperm');
+     } else {
+         this.render('addBug');
+     }*/
+    this.render('listBug');
+});
+Router.route('bugs/edit/:_id', function () {
+    /*   user = Meteor.user();
+        var role ={};
+        if(user && user['role']){
+        	role = user['role'];
+        }
+        module = "bugs";
+        action = "edit";
+        actionlist = role[module];
+        if (_.indexOf(actionlist, action) == -1) {
+            this.render('noperm');
+        } else {*/
+    Session.set('bugid', this.params._id);
+    var item = Bug.findOne({
+        _id: this.params._id
+    });
+    console.log(item);
+    if (item) {
+        Session.set('bug_' + this.params._id, item);
+        var project = Project.find({}, {
+            transform: function (obj) {
+                obj.isselected = false;
+                if (obj.projectname == item.project) {
+                    obj.isselected = true;
+                }
+                return obj;
+            }
+        }).fetch();
+        var users = Meteor.users.find({}, {
+            transform: function (obj) {
+                obj.isselected = false;
+                if (obj.username == item.username) {
+                    obj.isselected = true;
+                }
+                return obj;
+            }
+        }).fetch();
+        console.log(project);
+        this.render('editBug', {
+            data: {
+                item: item,
+                project: project,
+                users: users
+            }
+        });
     } else {
-        this.render('addBug');
+        this.render('noperm');
     }
+
+    //}
 });
-Router.route('register', function() {
+Router.route('bugs/del/:_id', function () {
+    /*   user = Meteor.user();
+        var role ={};
+        if(user && user['role']){
+        	role = user['role'];
+        }
+        module = "bugs";
+        action = "delete";
+        actionlist = role[module];
+        if (_.indexOf(actionlist, action) == -1) {
+            this.render('noperm');
+        } else {*/
+    var item = Bug.findOne({
+        _id: this.params._id
+    });
+    if (item) {
+        Bug.remove({
+            _id: this.params._id
+        });
+        Router.go('listBug');
+    } else {
+        this.render('recordnoexists');
+    }
+    //}
+});
+Router.route('register', function () {
     this.layout('sign');
-    this.render('signupForm');
+    //this.render('signupForm');
 });
-Router.route('module/add', function() {
+Router.route('module/add', function () {
     //this.render();
     user = Meteor.user();
-    var role ={};
-    if(user && user['role']){
-    	role = user['role'];
+    var role = {};
+    if (user && user['role']) {
+        role = user['role'];
     }
     module = "module";
     action = "add";
@@ -106,11 +276,11 @@ Router.route('module/add', function() {
         this.render('addModule');
     }
 });
-Router.route('module/list', function() {
+Router.route('module/list', function () {
     user = Meteor.user();
-    var role ={};
-    if(user && user['role']){
-    	role = user['role'];
+    var role = {};
+    if (user && user['role']) {
+        role = user['role'];
     }
     module = "module";
     action = "list";
@@ -121,12 +291,12 @@ Router.route('module/list', function() {
         this.render('listModule');
     }
 });
-Router.route('module/edit/:_id', function() {
+Router.route('module/edit/:_id', function () {
 
     user = Meteor.user();
-    var role ={};
-    if(user && user['role']){
-    	role = user['role'];
+    var role = {};
+    if (user && user['role']) {
+        role = user['role'];
     }
     module = "module";
     action = "list";
@@ -134,6 +304,7 @@ Router.route('module/edit/:_id', function() {
     if (_.indexOf(actionlist, action) == -1) {
         this.render('noperm');
     } else {
+        Session.set('moduleid', this.params._id);
         var item = Module.findOne({
             _id: this.params._id
         });
@@ -142,16 +313,16 @@ Router.route('module/edit/:_id', function() {
         });
     }
 });
-Router.route('module/del/:_id', function() {
+Router.route('module/del/:_id', function () {
 
 
     user = Meteor.user();
-    var role ={};
-    if(user && user['role']){
-    	role = user['role'];
+    var role = {};
+    if (user && user['role']) {
+        role = user['role'];
     }
     module = "module";
-    action = "list";
+    action = "delete";
     actionlist = role[module];
     if (_.indexOf(actionlist, action) == -1) {
         this.render('noperm');
@@ -169,12 +340,11 @@ Router.route('module/del/:_id', function() {
         }
     }
 });
-Router.route('/user/role/add', function() {
-    //this.render('addRole');
+Router.route('user/add',function(){
     user = Meteor.user();
-    var role ={};
-    if(user && user['role']){
-    	role = user['role'];
+    var role = {};
+    if (user && user['role']) {
+        role = user['role'];
     }
     module = "user";
     action = "add";
@@ -182,15 +352,76 @@ Router.route('/user/role/add', function() {
     if (_.indexOf(actionlist, action) == -1) {
         this.render('noperm');
     } else {
-        this.render('addRole');
+        this.render('addUser');
     }
 });
-Router.route('noperm', function() {
+Router.route('/user/del/:_id',function(){
+    user = Meteor.user();
+    var role = {};
+    if (user && user['role']) {
+        role = user['role'];
+    }
+    module = "user";
+    action = "delete";
+    actionlist = role[module];
+    if (_.indexOf(actionlist, action) == -1) {
+        this.render('noperm');
+    } else {
+        var item = Meteor.users.findOne({
+            _id: this.params._id
+        });
+        if (item) {
+            Meteor.users.remove({
+                _id: this.params._id
+            });
+            Router.go('listUser');
+        } else {
+            this.render('recordnoexists');
+        }
+    }
+})
+Router.route('/user/:_id/role/add', function () {
+    id = this.params._id;
+    Session.set('userId',id);
+    this.render('addRole');
+    
+   /* user = Meteor.user();
+    var role = {};
+    if (user && user['role']) {
+        role = user['role'];
+    }
+    module = "role";
+    action = "add";
+    actionlist = role[module];
+    if (_.indexOf(actionlist, action) == -1) {
+        this.render('noperm');
+    } else {
+        this.render('addRole');
+    }*/
+});
+Router.route('/user/list',function(){
+   /* user = Meteor.user();
+    var role = {};
+    if (user && user['role']) {
+        role = user['role'];
+    }
+    module = "user";
+    action = "list";
+    actionlist = role[module];
+    if (_.indexOf(actionlist, action) == -1) {
+        this.render('noperm');
+    } else {
+        this.render('addRole');
+    }*/
+    this.render('listUser');
+})
+Router.route('noperm', function () {
     this.render();
 });
-Router.route('createSuperUser', function() {
+Router.route('createSuperUser', function () {
     if (Meteor.userId()) {
         Router.go('/');
     }
+    this.layout('sign');
     this.render('createSuperUser');
 });

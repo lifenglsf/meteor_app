@@ -1,4 +1,4 @@
-Template.projectList.helpers({
+Template.listProject.helpers({
     tasks: function() {
         var r = [];
         var user = Meteor.user();
