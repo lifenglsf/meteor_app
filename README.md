@@ -44,7 +44,22 @@ this package for date select.
     ```
      meteor add rajit:bootstrap3-datepicker
     ```
-
+* install gridfs
+    run command
+    ```
+    meteor add cfs:standard-packages
+    meteor add cfs:gridfs
+    ```
+    the package used for uploading files or images
+* install autoform
+    run command
+    ```
+    meteor add aldeed:autoform
+    ```
+* install autoform
+    run command
+    ```meteor add reactive-var
+    ```
 #start app
 
 ```
