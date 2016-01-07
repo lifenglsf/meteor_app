@@ -1,15 +1,5 @@
-"use strict";
-Template.adminIndex.events({
-    'click #addProject': function () {
-        Router.go('add-project');
-    },
-    'click #addBug': function () {
-        Router.go('add-bug');
-    },
-    'click #addTask': function () {
-        Router.go('add-task');
-    },
-    'click #taskList': function () {
-        Router.go('task-list');
-    }
-});
+/*jshint strict: true*/
+/*jshint globals: true, devel: true, node: true, jquery: true*//*global $, jQuery, ko, moment, console, toastr, accounting, _,Template,Meteor,Router,Accounts */
+Template.addBug.events({
+    
+})
